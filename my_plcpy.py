@@ -18,10 +18,10 @@ class PlcConnect:
         if result == 0:
             self.isConnected = True
             text = '연결 성공'
-            return True, text
+            return True
         else:
             text = f'연결 실패 (에러코드 {result})'
-            return False, result
+            return False
         
     def disconnect(self):
 
@@ -32,20 +32,20 @@ class PlcConnect:
             if result == 0:
                 self.isConnected = False
                 text = '연결 해제 성공'
-                return True, text
+                return True
             else:
                 text = f'연결 실패 (에러코드 {result})'
-                return False, text
+                return False
         else:
             text = 'PLC가 미연결 상태입니다.'
-            return 0, text
+            return 0
     
     def ReadDeviceBlock(self,_device,_count):
         read_list =[]
         if self.isConnected:
             for i in range(_device,_device+_count):
                 device = self.plc.GetDevice(f"D{i}")
-                read_list.append(device[1])
+                read_list.append((f"D{i}",device[1]))
             return read_list
         else:
             return False
